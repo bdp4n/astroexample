@@ -7,10 +7,54 @@ const { anime } = Astro.params;
 const info = animes.find((b) => b.id === anime);
 
 if (!info) {
-    return Astro.redirect("/404", 404);
+    return Astro.redirect("/404");
 }
 ---
 
-<Layout title="Anime">
-    <h1>Anime</h1>
+<Layout title={`Anime ${info.title}`}>
+    <main class="m-auto max-w-4xl">
+        <div class="grid grid-cols-[350px_1fr] gap-x-12 mt-20">
+            <div class="flex flex-col">
+                <picture class="mb-8 w-full relative">
+                    <img
+                        class="aspect-[389/500] h-full object-cover w-full rounded"
+                        src={info.img}
+                        alt={`Portada del anime ${info.title}`}
+                    />
+                </picture>
+
+                <button
+                    type="button"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 justify-center"
+                >
+                    My anime list
+                    <svg
+                        class="w-3.5 h-3.5 ml-2"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <aside>
+                <h1 class="text-4xl font-black mb-4">{info.title}</h1>
+
+                <p class="text-lg mb-4">{info.opinion}</p>
+                <p class="">
+                    <strong>Director:</strong><span
+                        class="font-semibold text-gray-800"></span>
+                    {info.author}
+                </p>
+            </aside>
+        </div>
+    </main>
 </Layout>
