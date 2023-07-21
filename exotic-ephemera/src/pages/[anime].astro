@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/Layouttest.astro";
 import { animes } from "../components/dta/animes.js";
 
 const { anime } = Astro.params;
@@ -13,6 +13,16 @@ if (!info) {
 
 <Layout title={`Anime ${info.title}`}>
     <main class="m-auto max-w-4xl">
+        <header>
+            <h1
+                class="font-black uppercase text-3xl md:text-4xl text-center py-8 px-4"
+                style="view-transition-name: title"
+            >
+                Top 10 Anime List of <span
+                    class="block text-[22px] md:text[324px]">bdp4n</span
+                >
+            </h1>
+        </header>
         <div class="grid grid-cols-[350px_1fr] gap-x-12 mt-20">
             <div class="flex flex-col">
                 <picture class="mb-8 w-full relative">
@@ -20,6 +30,7 @@ if (!info) {
                         class="aspect-[389/500] h-full object-cover w-full rounded"
                         src={info.img}
                         alt={`Portada del anime ${info.title}`}
+                        style={`view-transition-name: anime-${info.id}`}
                     />
                 </picture>
 
@@ -45,14 +56,14 @@ if (!info) {
                 </button>
             </div>
 
-            <aside>
-                <h1 class="text-4xl font-black mb-4">{info.title}</h1>
-
+            <aside class="mt-10 md:mt-0">
+                <h1 class="text-5xl font-black mb-4">{info.title}</h1>
                 <p class="text-lg mb-4">{info.opinion}</p>
-                <p class="">
-                    <strong>Director:</strong><span
-                        class="font-semibold text-gray-800"></span>
-                    {info.author}
+                <p>
+                    <strong>Director:</strong>
+                    <span class="font-semibold text-gray-800"
+                        >{info.author}</span
+                    >
                 </p>
             </aside>
         </div>

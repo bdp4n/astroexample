@@ -1,0 +1,93 @@
+---
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="view-transition" content="same-origin" />
+		<!-- same origin es para que lo unico que active las transiciones sean en el mismo dominio, esto evita que cuando el usuario salga de la pagina la misma no quiera animar lo demas-->
+
+		<title>{title}</title>
+	</head>
+	<body>
+		<div id="content">
+			<slot />
+		</div>
+	</body>
+</html>
+<style is:global>
+	:root {
+		--accent: 124, 58, 237;
+		--accent-gradient: linear-gradient(
+			45deg,
+			rgb(var(--accent)),
+			#da62c4 30%,
+			white 60%
+		);
+	}
+	html {
+		font-family: system-ui, sans-serif;
+		background-color: #f6f6f6;
+	}
+	code {
+		font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
+			DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes fade-out {
+		to {
+			opacity: 0;
+		}
+	}
+</style>
+
+<script>
+	if (document.startViewTransition) {
+		window.navigation.addEventListener("navigate", (event) => {
+			const toUrl = new URL(event.destination.url);
+
+			// es una pagina externa?, si es asi, se ignnora
+			if (location.origin != toUrl.origin) return;
+
+			// si es una navegacion en el mismo dominio (orige)
+
+			event.itercept({
+				async handler() {
+					//vamos a cargar la pagina de destio
+					// utilizando u fetch para obtener un HTML
+					const response = await fetch(toUrl.pathname); // /stains-gate
+					const text = await response.text();
+					// aqui queremos quedarnos solo con el contenido HTML dentro de la etiqueta body
+					// usamos un regex para extraerlo (regex viene del anglisismo regular expretion y a como yo lo entiendo se trata de una exprecion con varios simbolos que hacen una cosa en particular)
+
+					const [, data] = text.match(/<body>([\s\S]*)<\/body>/i);
+
+					//utilizar la API de View Transition API
+
+					document.startViewTransition(() => {
+						// como tiene que actualizar la vista
+						// document.getElementById('content').innerHTML = data//
+						document.body.innerHTML = data;
+						document.documentElement.scrollTop = 0;
+					});
+				},
+			});
+		});
+	}
+</script>
