@@ -1,0 +1,16 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { animes } from "../components/dta/animes.js";
+
+const { anime } = Astro.params;
+
+const info = animes.find((b) => b.id === anime);
+
+if (!info) {
+    return Astro.redirect("/404", 404);
+}
+---
+
+<Layout title="Anime">
+    <h1>Anime</h1>
+</Layout>

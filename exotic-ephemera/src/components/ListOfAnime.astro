@@ -1,0 +1,18 @@
+---
+import AnimeItem from "./AnimeItem.astro";
+import { animes } from "./dta/animes";
+---
+
+<ul class="grid grid-cols-2 md:grid-cols-3 gap-3 px-4">
+    <>
+        {
+            animes.map(({ id, title, img }) => {
+                return (
+                    <li>
+                        <AnimeItem id={id} title={title} img={img} />
+                    </li>
+                );
+            })
+        }
+    </>
+</ul>
